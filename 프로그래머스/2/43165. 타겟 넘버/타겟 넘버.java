@@ -1,22 +1,24 @@
 class Solution {
-    int count = 0;
+    int answer = 0;
     public int solution(int[] numbers, int target) {
-        int answer = 0;
-        dfs(numbers, 0, target, 0);
-        answer = count;
+        // [4, 1, 2, 1]
+        // 4, -4, -1, 1, -2, 2, -1, 1
+        // 순서는 중요 X
+        // dfs로 idx를 증가시켜가면서, left는 양수 right는 음수로 풀면 되지 않을까?
+        
+        dfs(numbers, 0, 0, target);
         return answer;
     }
     
-    public void dfs(int[] numbers, int depth, int target, int result) {
-        if (depth >= numbers.length) {
-            if (result == target)
-                count++;
+    public void dfs(int[] numbers, int idx, int sum, int target) {
+        if (idx == numbers.length && target == sum) {
+            answer++;
             return;
         }
-        int plus = result + numbers[depth];
-        int minus = result - numbers[depth];
         
-        dfs(numbers, depth + 1, target, plus);
-        dfs(numbers, depth + 1, target, minus);
+        if (idx == numbers.length) return;
+        
+        dfs(numbers, idx + 1, sum + numbers[idx], target);
+        dfs(numbers, idx + 1, sum - numbers[idx], target);
     }
 }
