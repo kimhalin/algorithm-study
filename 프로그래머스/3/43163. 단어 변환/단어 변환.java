@@ -1,37 +1,33 @@
 class Solution {
-    boolean[] visited;
-    int value = 51;
+    static boolean[] visited;
+    static int answer = 0;
+    
     public int solution(String begin, String target, String[] words) {
         visited = new boolean[words.length];
-        backTracking(begin, target, words, 0);
-        if (value == 51)
-            return 0;
-        return value;
+        
+        dfs(begin, target, words, 0);
+        return answer;
     }
     
-    public void backTracking(String begin, String target, String[] words, int depth) {
+    public static void dfs(String begin, String target, String[] words, int cnt) {
         if (begin.equals(target)) {
-            value = Math.min(depth, value);
+            answer = cnt;
             return;
         }
         
         for (int i = 0; i < words.length; i++) {
-            if (check(begin, words[i]) && !visited[i]) {
+            if (visited[i]) continue;
+            
+            int k = 0;
+            for (int j = 0; j < begin.length(); j++) {
+                if (begin.charAt(j) == words[i].charAt(j)) k++;
+            }
+            
+            if (k == begin.length() - 1) {
                 visited[i] = true;
-                backTracking(words[i], target, words, depth + 1);
+                dfs(words[i], target, words, cnt + 1);
                 visited[i] = false;
             }
         }
-    }
-    
-    public boolean check(String s1, String s2) {
-        int cnt = 0;
-        for (int i = 0; i < s1.length(); i++) {
-            if (s1.charAt(i) != s2.charAt(i)) {
-                cnt++;
-            }
-        }
-        
-        return cnt <= 1;
     }
 }
